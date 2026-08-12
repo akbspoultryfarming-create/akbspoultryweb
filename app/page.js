@@ -889,17 +889,21 @@ function Careers() {
 /* ============ CONTACT ============ */
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
-  const [status, setStatus] = useState({ loading: false, msg: '' });
+  const [status, setStatus] = useState({ loading: false, msg: '', success: false });
   const submit = async (e) => {
     e.preventDefault();
-    setStatus({ loading: true, msg: '' });
+    setStatus({ loading: true, msg: '', success: false });
     try {
       const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
       const data = await res.json();
-      setStatus({ loading: false, msg: data.message || data.error });
-      if (res.ok) setForm({ name: '', email: '', phone: '', message: '' });
+      if (res.ok) {
+        setStatus({ loading: false, msg: data.message || 'Message sent successfully!', success: true });
+        setForm({ name: '', email: '', phone: '', message: '' });
+      } else {
+        setStatus({ loading: false, msg: data.error || 'Could not send. Please try again or WhatsApp us at +91 9893345906', success: false });
+      }
     } catch {
-      setStatus({ loading: false, msg: 'Something went wrong. Please try again.' });
+      setStatus({ loading: false, msg: 'Network error. Please try again or WhatsApp us at +91 9893345906', success: false });
     }
   };
   return (
@@ -958,7 +962,20 @@ function Contact() {
               <button type="submit" disabled={status.loading} className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full btn-gradient-green text-white font-semibold shadow-luxury hover:scale-105 transition-transform disabled:opacity-60">
                 <Send className="h-4 w-4" /> {status.loading ? 'Sending...' : 'Send Message'}
               </button>
-              {status.msg && <div className="text-sm font-medium text-akbs-green">{status.msg}</div>}
+              {status.msg && (
+                <div className={`flex-1 min-w-0 px-4 py-2.5 rounded-xl text-sm font-medium border ${status.success ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+                  <div className="flex items-center gap-2">
+                    {status.success ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <MessageCircle className="h-4 w-4 shrink-0" />}
+                    <span>{status.msg}</span>
+                  </div>
+                  {!status.success && (
+                    <a href="https://wa.me/919893345906?text=Hello%20AKBS%2C%20I%20tried%20the%20contact%20form%20but%20could%20not%20send.%20Please%20connect."
+                      target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 mt-1.5 text-xs font-bold text-[#25D366] hover:underline">
+                      <MessageCircle className="h-3 w-3" /> Chat on WhatsApp instead
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </form>
         </div>
