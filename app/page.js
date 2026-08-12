@@ -973,7 +973,7 @@ function Footer() {
     { name: 'Home', href: '#home' },
     { name: 'About Company', href: '/about' },
     { name: 'Our Farm', href: '#farm' },
-    { name: 'Feed Plant', href: '#feed' },
+    { name: 'Feed Plant', href: '/products' },
     { name: 'Infrastructure', href: '#infrastructure' },
     { name: 'Gallery', href: '#gallery' },
   ];
