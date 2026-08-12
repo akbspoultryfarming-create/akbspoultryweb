@@ -449,10 +449,17 @@ function AboutPage() {
 
       <AboutFooter />
 
-      {/* Floating WhatsApp */}
-      <a href={`https://wa.me/${COMPANY.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer"
-        className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full bg-[#25D366] shadow-luxury-lg flex items-center justify-center hover:scale-110 transition-transform animate-float">
-        <MessageCircle className="h-6 w-6 text-white" fill="currentColor" />
+      {/* Floating WhatsApp Business */}
+      <a href={`https://wa.me/${COMPANY.phone.replace(/[^0-9]/g, '')}?text=Hello%20AKBS%20Poultry%2C%20I%20visited%20your%20About%20page%20and%20would%20like%20to%20connect.`} target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp Business"
+        className="group fixed bottom-6 right-6 z-40 flex items-center gap-3">
+        <span className="hidden md:inline-block bg-white text-akbs-dark text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
+          Chat on WhatsApp
+        </span>
+        <span className="relative h-14 w-14 rounded-full bg-[#25D366] shadow-luxury-lg flex items-center justify-center hover:scale-110 transition-transform animate-float">
+          <MessageCircle className="h-6 w-6 text-white" fill="currentColor" />
+          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20" />
+          <span className="absolute -top-1 -right-1 bg-akbs-gold text-akbs-dark text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-md">BIZ</span>
+        </span>
       </a>
     </main>
   );

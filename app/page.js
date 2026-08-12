@@ -535,9 +535,9 @@ function Management() {
                 <div className="text-akbs-gold font-semibold text-sm mb-3">{m.role}</div>
                 <p className="text-akbs-ink/60 text-sm leading-relaxed mb-4">{m.description}</p>
                 <div className="flex gap-2">
-                  <a href="#" className="h-8 w-8 rounded-full bg-akbs-bg flex items-center justify-center text-akbs-green hover:btn-gradient-green hover:text-white transition-all"><Linkedin className="h-4 w-4" /></a>
-                  <a href="#" className="h-8 w-8 rounded-full bg-akbs-bg flex items-center justify-center text-akbs-green hover:btn-gradient-green hover:text-white transition-all"><Facebook className="h-4 w-4" /></a>
-                  <a href="#" className="h-8 w-8 rounded-full bg-akbs-bg flex items-center justify-center text-akbs-green hover:btn-gradient-green hover:text-white transition-all"><Instagram className="h-4 w-4" /></a>
+                  <a href="https://www.facebook.com/akbspoultryfarming" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-full bg-akbs-bg flex items-center justify-center text-akbs-green hover:btn-gradient-green hover:text-white transition-all" aria-label="Facebook"><Facebook className="h-4 w-4" /></a>
+                  <a href="https://www.instagram.com/akbspoultryfarming/" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-full bg-akbs-bg flex items-center justify-center text-akbs-green hover:btn-gradient-green hover:text-white transition-all" aria-label="Instagram"><Instagram className="h-4 w-4" /></a>
+                  <a href="https://wa.me/919893345906" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-full bg-akbs-bg flex items-center justify-center text-akbs-green hover:bg-[#25D366] hover:text-white transition-all" aria-label="WhatsApp"><MessageCircle className="h-4 w-4" /></a>
                 </div>
               </div>
             </motion.div>
@@ -997,9 +997,10 @@ function Footer() {
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-5">Building a sustainable and profitable poultry ecosystem with quality, integrity and innovation.</p>
             <div className="flex gap-2">
-              {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                <a key={i} href="#" className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center hover:btn-gradient-gold hover:text-akbs-dark transition-all"><Icon className="h-4 w-4" /></a>
-              ))}
+              <a href="https://www.facebook.com/akbspoultryfarming" target="_blank" rel="noreferrer" className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center hover:btn-gradient-gold hover:text-akbs-dark transition-all" aria-label="Facebook"><Facebook className="h-4 w-4" /></a>
+              <a href="https://www.instagram.com/akbspoultryfarming/" target="_blank" rel="noreferrer" className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center hover:btn-gradient-gold hover:text-akbs-dark transition-all" aria-label="Instagram"><Instagram className="h-4 w-4" /></a>
+              <a href="https://wa.me/919893345906" target="_blank" rel="noreferrer" className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all" aria-label="WhatsApp Business"><MessageCircle className="h-4 w-4" /></a>
+              <a href={`mailto:info@akbspoultry.com`} className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center hover:btn-gradient-gold hover:text-akbs-dark transition-all" aria-label="Email"><Mail className="h-4 w-4" /></a>
             </div>
           </div>
           <div>
@@ -1055,9 +1056,16 @@ function FloatingButtons() {
   }, []);
   return (
     <>
-      <a href="https://wa.me/919893345906" target="_blank" rel="noreferrer" className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full bg-[#25D366] shadow-luxury-lg flex items-center justify-center hover:scale-110 transition-transform animate-float">
-        <MessageCircle className="h-6 w-6 text-white" fill="currentColor" />
-        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20" />
+      <a href="https://wa.me/919893345906?text=Hello%20AKBS%20Poultry%2C%20I%20visited%20your%20website%20and%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp Business"
+        className="group fixed bottom-6 right-6 z-40 flex items-center gap-3">
+        <span className="hidden md:inline-block bg-white text-akbs-dark text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
+          Chat on WhatsApp
+        </span>
+        <span className="relative h-14 w-14 rounded-full bg-[#25D366] shadow-luxury-lg flex items-center justify-center hover:scale-110 transition-transform animate-float">
+          <MessageCircle className="h-6 w-6 text-white" fill="currentColor" />
+          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20" />
+          <span className="absolute -top-1 -right-1 bg-akbs-gold text-akbs-dark text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-md">BIZ</span>
+        </span>
       </a>
       <AnimatePresence>
         {show && (
