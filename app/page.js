@@ -358,7 +358,7 @@ function AboutRow() {
                   <li key={f.text} className="flex items-center gap-3 text-sm text-akbs-ink/80"><CheckCircle2 className="h-4 w-4 text-akbs-green shrink-0" /><span className="font-medium">{f.text}</span></li>
                 ))}
               </ul>
-              <a href="#projects" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full btn-gradient-green text-white font-semibold text-sm shadow-md hover:scale-105 transition-transform">View Farm Details <ArrowRight className="h-4 w-4" /></a>
+              <a href="/farm" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full btn-gradient-green text-white font-semibold text-sm shadow-md hover:scale-105 transition-transform">View Farm Details <ArrowRight className="h-4 w-4" /></a>
             </div>
           </motion.div>
 
@@ -972,7 +972,7 @@ function Footer() {
   const quickLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About Company', href: '/about' },
-    { name: 'Our Farm', href: '#farm' },
+    { name: 'Our Farm', href: '/farm' },
     { name: 'Feed Plant', href: '/products' },
     { name: 'Infrastructure', href: '#infrastructure' },
     { name: 'Gallery', href: '#gallery' },
