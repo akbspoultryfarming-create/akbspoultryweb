@@ -340,7 +340,7 @@ function AboutRow() {
             <SectionEyebrow>About Company</SectionEyebrow>
             <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-akbs-dark leading-tight mb-4">Quality Poultry Farming<br/><span className="text-gradient-gold">Our Commitment</span></h2>
             <p className="text-akbs-ink/70 leading-relaxed mb-6">AKBS Poultry Farming Private Limited is an integrated poultry company engaged in broiler farming, feed manufacturing, poultry infrastructure development and poultry consultancy using modern scientific farming techniques. We follow strict biosecurity to deliver quality and profitable solutions.</p>
-            <a href="#management" className="inline-flex items-center gap-2 px-5 py-3 rounded-full btn-gradient-green text-white font-semibold text-sm shadow-luxury hover:scale-105 transition-transform">Read More <ArrowRight className="h-4 w-4" /></a>
+            <a href="/about" className="inline-flex items-center gap-2 px-5 py-3 rounded-full btn-gradient-green text-white font-semibold text-sm shadow-luxury hover:scale-105 transition-transform">Read More <ArrowRight className="h-4 w-4" /></a>
           </motion.div>
 
           <motion.div id="farm" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="bg-white rounded-3xl shadow-luxury border border-black/5 overflow-hidden group">
@@ -971,7 +971,7 @@ function Contact() {
 function Footer() {
   const quickLinks = [
     { name: 'Home', href: '#home' },
-    { name: 'About Company', href: '#about' },
+    { name: 'About Company', href: '/about' },
     { name: 'Our Farm', href: '#farm' },
     { name: 'Feed Plant', href: '#feed' },
     { name: 'Infrastructure', href: '#infrastructure' },
