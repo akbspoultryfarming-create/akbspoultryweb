@@ -972,6 +972,7 @@ function Footer() {
   const quickLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About Company', href: '/about' },
+  { name: 'What We Do', href: '/what-we-do' },
     { name: 'Our Farm', href: '/farm' },
     { name: 'Feed Plant', href: '/products' },
     { name: 'Infrastructure', href: '#infrastructure' },
