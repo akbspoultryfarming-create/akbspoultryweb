@@ -8,21 +8,22 @@ import {
   Building2, Handshake, Lightbulb, Wrench, Cog, HeartHandshake, Headphones,
   Facebook, Instagram, Linkedin, Youtube, ChevronDown, Play, CheckCircle2, Award,
   Zap, Droplets, Wind, Thermometer, Activity, PackageOpen, TestTube2, Warehouse,
-  Send, Star, Quote
+  Send, Star, Quote, Briefcase, Calendar, Clock, MapPinned, ChevronsRight,
+  Newspaper, ScrollText, Egg, Beaker, Utensils, ShoppingBag, ArrowUpRight, TrendingUp
 } from 'lucide-react';
 
 /* ============ DATA ============ */
 const NAV_LINKS = [
   { name: 'Home', href: '#home' },
-  { name: 'About Company', href: '#about' },
-  { name: 'Our Farm', href: '#farm' },
-  { name: 'Feed Plant', href: '#feed' },
+  { name: 'About', href: '#about' },
+  { name: 'Farm', href: '#farm' },
+  { name: 'Products', href: '#products' },
   { name: 'Infrastructure', href: '#infrastructure' },
-  { name: 'Services', href: '#services' },
   { name: 'Projects', href: '#projects' },
   { name: 'Gallery', href: '#gallery' },
-  { name: 'Management', href: '#management' },
-  { name: 'Contact Us', href: '#contact' },
+  { name: 'News', href: '#news' },
+  { name: 'Careers', href: '#careers' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 const HERO_SLIDES = [
@@ -113,6 +114,29 @@ const FAQS = [
   { q: 'Where are your farms located?', a: 'Our operations are located in Silwani, District Raisen, Madhya Pradesh, India, with plans for expansion across central India.' },
   { q: 'Do you supply feed to external clients?', a: 'Yes, our premium poultry feed is available for broilers, growers and layer birds with laboratory-tested nutritional balance.' },
   { q: 'Do you offer contract farming opportunities?', a: 'Absolutely. We partner with farmers under structured contract farming arrangements including birds, feed, medication and technical support.' },
+];
+
+const PRODUCTS = [
+  { icon: Egg, name: 'Broiler Pre-Starter', tag: 'Day 1 - 10', protein: '23%', energy: '3050 Kcal', desc: 'High-protein crumbles for optimal early growth and immune development.', color: 'from-akbs-gold/20 to-akbs-gold/5' },
+  { icon: Utensils, name: 'Broiler Starter', tag: 'Day 11 - 21', protein: '21%', energy: '3100 Kcal', desc: 'Balanced pellets designed for accelerated weight gain and skeletal strength.', color: 'from-akbs-green/20 to-akbs-green/5' },
+  { icon: Wheat, name: 'Broiler Finisher', tag: 'Day 22 - Market', protein: '19%', energy: '3200 Kcal', desc: 'High-energy formula to maximize FCR and market-ready body weight.', color: 'from-akbs-gold/20 to-akbs-gold/5' },
+  { icon: Beaker, name: 'Layer Feed Premium', tag: 'Layer Birds', protein: '17%', energy: '2750 Kcal', desc: 'Calcium-fortified feed for sustained egg production and shell quality.', color: 'from-akbs-green/20 to-akbs-green/5' },
+  { icon: ShoppingBag, name: 'Grower Special', tag: 'Growing Stage', protein: '20%', energy: '2900 Kcal', desc: 'Complete nutrition for uniform growth and healthy development.', color: 'from-akbs-gold/20 to-akbs-gold/5' },
+  { icon: PackageOpen, name: 'Custom Blends', tag: 'On-Demand', protein: 'Custom', energy: 'Custom', desc: 'Tailored feed formulations built for specific farm goals and species.', color: 'from-akbs-green/20 to-akbs-green/5' },
+];
+
+const NEWS_ITEMS = [
+  { date: 'May 28, 2026', category: 'Company News', image: 'https://images.unsplash.com/photo-1630090374791-c9eb7bab3935?auto=format&fit=crop&w=1200&q=80', title: 'AKBS Announces 100,000 Bird Capacity Expansion Roadmap', excerpt: 'Strategic five-year plan approved for major infrastructure scale-up across central India.' },
+  { date: 'May 15, 2026', category: 'Industry', image: 'https://images.pexels.com/photos/17064389/pexels-photo-17064389.jpeg?auto=compress&cs=tinysrgb&w=1200', title: 'Environment Controlled Sheds: The New Poultry Standard', excerpt: 'How climate-controlled infrastructure is transforming broiler productivity metrics.' },
+  { date: 'Apr 30, 2026', category: 'Feed Plant', image: 'https://images.unsplash.com/photo-1627920768537-8f71c0c8dc44?auto=format&fit=crop&w=1200&q=80', title: 'New Feed Plant Achieves Full Production Milestone', excerpt: 'Continuous production with laboratory-tested batches now serving regional partners.' },
+];
+
+const CAREERS = [
+  { role: 'Poultry Farm Supervisor', dept: 'Farm Operations', type: 'Full-time', location: 'Silwani, MP', experience: '3-5 yrs' },
+  { role: 'Feed Plant Operator', dept: 'Feed Manufacturing', type: 'Full-time', location: 'Silwani, MP', experience: '2-4 yrs' },
+  { role: 'Poultry Veterinarian', dept: 'Bird Health', type: 'Full-time', location: 'Silwani, MP', experience: '2+ yrs' },
+  { role: 'Quality Lab Technician', dept: 'Quality Assurance', type: 'Full-time', location: 'Silwani, MP', experience: '1-3 yrs' },
+  { role: 'Business Development Manager', dept: 'Sales & Growth', type: 'Full-time', location: 'MP / Remote', experience: '5+ yrs' },
 ];
 
 /* ============ COUNTER ============ */
@@ -600,6 +624,268 @@ function FAQ() {
   );
 }
 
+/* ============ LIVE FARM COUNTER ============ */
+function LiveCounter() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: '-100px' });
+  const [live, setLive] = useState({ birds: 18742, feed: 4820, eggs: 12530, batches: 47 });
+
+  useEffect(() => {
+    if (!inView) return;
+    const t = setInterval(() => {
+      setLive((p) => ({
+        birds: p.birds + Math.floor(Math.random() * 3),
+        feed: +(p.feed + Math.random() * 0.4).toFixed(1),
+        eggs: p.eggs + Math.floor(Math.random() * 5 + 1),
+        batches: p.batches,
+      }));
+    }, 1800);
+    return () => clearInterval(t);
+  }, [inView]);
+
+  const items = [
+    { icon: Bird, label: 'Birds Housed Today', value: live.birds.toLocaleString(), suffix: '', accent: 'from-emerald-400/20' },
+    { icon: Wheat, label: 'Feed Produced (Tons)', value: live.feed.toFixed(1), suffix: 'T', accent: 'from-amber-400/20' },
+    { icon: Egg, label: 'Eggs Handled Today', value: live.eggs.toLocaleString(), suffix: '', accent: 'from-orange-400/20' },
+    { icon: TrendingUp, label: 'Active Farm Batches', value: live.batches.toString(), suffix: '', accent: 'from-teal-400/20' },
+  ];
+
+  return (
+    <section ref={ref} className="py-20 md:py-24 bg-akbs-dark relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.07]">
+        <img src="https://images.pexels.com/photos/17064389/pexels-photo-17064389.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="" className="w-full h-full object-cover" />
+      </div>
+      <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-akbs-gold/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="container mx-auto relative">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+            </span>
+            <span className="text-xs font-bold tracking-[0.25em] text-akbs-gold uppercase">Live Farm Dashboard</span>
+          </div>
+          <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-white mb-3">Real-Time <span className="text-gradient-gold">Production Metrics</span></h2>
+          <p className="text-white/60 max-w-2xl mx-auto">Watch our farms in action &mdash; live operational data updated in real time from AKBS integrated facilities.</p>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {items.map((it, i) => (
+            <motion.div
+              key={it.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="relative group"
+            >
+              <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${it.accent} to-transparent blur-xl opacity-60 group-hover:opacity-100 transition-opacity`} />
+              <div className="relative glass-dark rounded-3xl p-6 md:p-7 border border-akbs-gold/20 hover:border-akbs-gold/50 transition-all">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-akbs-gold/20 flex items-center justify-center">
+                    <it.icon className="h-6 w-6 text-akbs-gold" strokeWidth={2} />
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 uppercase tracking-widest">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> LIVE
+                  </div>
+                </div>
+                <AnimatePresence mode="popLayout">
+                  <motion.div
+                    key={it.value}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className="font-heading font-black text-3xl md:text-4xl text-white leading-tight tracking-tight"
+                  >
+                    {it.value}<span className="text-akbs-gold text-2xl ml-1">{it.suffix}</span>
+                  </motion.div>
+                </AnimatePresence>
+                <div className="text-xs md:text-sm text-white/60 font-medium mt-2">{it.label}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ PRODUCTS ============ */
+function Products() {
+  return (
+    <section id="products" className="py-20 md:py-24 bg-white">
+      <div className="container mx-auto">
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <SectionEyebrow>Product Catalogue</SectionEyebrow>
+          <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-akbs-dark mb-4">Premium <span className="text-gradient-gold">Feed Products</span></h2>
+          <p className="text-akbs-ink/60">Scientifically formulated feed products for every stage of poultry growth, laboratory-tested for consistency.</p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {PRODUCTS.map((p, i) => (
+            <motion.div
+              key={p.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.06 }}
+              whileHover={{ y: -8 }}
+              className="relative bg-white rounded-3xl overflow-hidden shadow-luxury border border-black/5 hover:border-akbs-gold/40 transition-all group"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${p.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+              <div className="relative p-7">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="h-14 w-14 rounded-2xl bg-white shadow-md flex items-center justify-center">
+                    <p.icon className="h-7 w-7 text-akbs-green" strokeWidth={2} />
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-akbs-dark text-white text-[10px] font-bold tracking-widest uppercase">{p.tag}</div>
+                </div>
+                <h3 className="font-heading font-extrabold text-xl text-akbs-dark mb-2">{p.name}</h3>
+                <p className="text-sm text-akbs-ink/60 leading-relaxed mb-5">{p.desc}</p>
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  <div className="bg-white/70 backdrop-blur rounded-xl p-3">
+                    <div className="text-[10px] font-bold text-akbs-green/70 tracking-widest uppercase mb-0.5">Protein</div>
+                    <div className="font-heading font-extrabold text-akbs-dark text-lg">{p.protein}</div>
+                  </div>
+                  <div className="bg-white/70 backdrop-blur rounded-xl p-3">
+                    <div className="text-[10px] font-bold text-akbs-green/70 tracking-widest uppercase mb-0.5">Energy</div>
+                    <div className="font-heading font-extrabold text-akbs-dark text-lg">{p.energy}</div>
+                  </div>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-2 text-sm font-semibold text-akbs-green group-hover:text-akbs-dark transition-colors">
+                  Request Sample <ArrowUpRight className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ NEWS ============ */
+function News() {
+  return (
+    <section id="news" className="py-20 md:py-24 bg-akbs-bg">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+          <div>
+            <SectionEyebrow>News & Insights</SectionEyebrow>
+            <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-akbs-dark">Latest from <span className="text-gradient-gold">AKBS</span></h2>
+          </div>
+          <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-akbs-green/20 text-akbs-green font-semibold text-sm hover:btn-gradient-green hover:text-white hover:border-transparent transition-all shrink-0">
+            View All Articles <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {NEWS_ITEMS.map((n, i) => (
+            <motion.article
+              key={n.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12 }}
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-3xl overflow-hidden shadow-luxury border border-black/5 group cursor-pointer"
+            >
+              <div className="relative h-52 overflow-hidden">
+                <img src={n.image} alt={n.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-akbs-gold text-akbs-dark text-[10px] font-bold tracking-widest uppercase">{n.category}</div>
+                <div className="absolute inset-0 bg-gradient-to-t from-akbs-dark/40 to-transparent" />
+              </div>
+              <div className="p-6">
+                <div className="flex items-center gap-3 text-xs text-akbs-ink/50 font-medium mb-3">
+                  <span className="inline-flex items-center gap-1"><Calendar className="h-3.5 w-3.5" /> {n.date}</span>
+                  <span>&bull;</span>
+                  <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> 4 min read</span>
+                </div>
+                <h3 className="font-heading font-extrabold text-lg text-akbs-dark leading-tight mb-2 group-hover:text-akbs-green transition-colors">{n.title}</h3>
+                <p className="text-sm text-akbs-ink/60 leading-relaxed mb-4">{n.excerpt}</p>
+                <div className="inline-flex items-center gap-1 text-sm font-semibold text-akbs-green">
+                  Read Story <ChevronsRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ CAREERS ============ */
+function Careers() {
+  return (
+    <section id="careers" className="py-20 md:py-24 bg-white relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-akbs-green/5 blur-3xl" />
+      <div className="container mx-auto relative">
+        <div className="grid lg:grid-cols-12 gap-10">
+          <div className="lg:col-span-4">
+            <SectionEyebrow>Careers</SectionEyebrow>
+            <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-akbs-dark leading-tight mb-4">
+              Build the <span className="text-gradient-gold">Future of Poultry</span> with Us
+            </h2>
+            <p className="text-akbs-ink/60 mb-6 leading-relaxed">
+              Join a passionate team building world-class poultry infrastructure across central India. We hire for skill, character and a hunger to innovate.
+            </p>
+            <div className="space-y-3 mb-8">
+              {[
+                { icon: Award, text: 'Merit-based growth culture' },
+                { icon: HeartHandshake, text: 'Family-first work environment' },
+                { icon: Sparkles, text: 'Learning & mentorship opportunities' },
+              ].map((b) => (
+                <div key={b.text} className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-xl bg-akbs-green/10 flex items-center justify-center shrink-0">
+                    <b.icon className="h-4 w-4 text-akbs-green" />
+                  </div>
+                  <span className="text-sm font-semibold text-akbs-dark">{b.text}</span>
+                </div>
+              ))}
+            </div>
+            <a href="mailto:careers@akbspoultry.com" className="inline-flex items-center gap-2 px-6 py-3 rounded-full btn-gradient-green text-white font-semibold shadow-luxury hover:scale-105 transition-transform">
+              <Send className="h-4 w-4" /> Send Your Resume
+            </a>
+          </div>
+          <div className="lg:col-span-8">
+            <div className="space-y-3">
+              {CAREERS.map((c, i) => (
+                <motion.div
+                  key={c.role}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ scale: 1.01 }}
+                  className="bg-akbs-bg rounded-2xl p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4 border border-transparent hover:border-akbs-gold/40 hover:shadow-luxury transition-all group cursor-pointer"
+                >
+                  <div className="h-12 w-12 rounded-xl bg-white shadow-md flex items-center justify-center shrink-0 group-hover:btn-gradient-gold transition-all">
+                    <Briefcase className="h-5 w-5 text-akbs-green group-hover:text-akbs-dark transition-colors" strokeWidth={2} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading font-extrabold text-lg text-akbs-dark leading-tight mb-1">{c.role}</h3>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-akbs-ink/60 font-medium">
+                      <span className="inline-flex items-center gap-1"><ScrollText className="h-3 w-3" /> {c.dept}</span>
+                      <span>&bull;</span>
+                      <span className="inline-flex items-center gap-1"><MapPinned className="h-3 w-3" /> {c.location}</span>
+                      <span>&bull;</span>
+                      <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {c.experience}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className="px-3 py-1 rounded-full bg-white text-akbs-green text-[10px] font-bold tracking-widest uppercase border border-akbs-green/20">{c.type}</div>
+                    <a href="mailto:careers@akbspoultry.com" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full btn-gradient-green text-white font-semibold text-xs shadow-md group-hover:scale-105 transition-transform">
+                      Apply <ArrowRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ============ CONTACT ============ */
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
@@ -792,10 +1078,14 @@ function App() {
       <Hero />
       <AboutRow />
       <ProjectsAndServices />
+      <LiveCounter />
+      <Products />
       <Infrastructure />
       <Gallery />
       <Management />
       <Testimonials />
+      <News />
+      <Careers />
       <FAQ />
       <Contact />
       <Footer />
