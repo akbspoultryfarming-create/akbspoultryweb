@@ -526,8 +526,8 @@ function Management() {
         <div className="grid md:grid-cols-3 gap-6">
           {MANAGEMENT.map((m, i) => (
             <motion.div key={m.name} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }} whileHover={{ y: -8 }} className="bg-white rounded-[24px] overflow-hidden shadow-luxury border border-black/5 group">
-              <div className="relative h-80 overflow-hidden bg-akbs-bg">
-                <img src={m.image} alt={m.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" />
+              <div className="relative h-96 overflow-hidden bg-gradient-to-b from-akbs-bg via-white to-akbs-bg flex items-center justify-center">
+                <img src={m.image} alt={m.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-akbs-dark/60 via-transparent to-transparent" />
               </div>
               <div className="p-6">
