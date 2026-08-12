@@ -98,9 +98,9 @@ const SERVICES = [
 ];
 
 const MANAGEMENT = [
-  { name: 'Shailendra Choudhary', role: 'Managing Director (MD)', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80', description: 'Leading corporate strategy, finance, expansion and integrated poultry business development with a vision for sustainable growth.' },
-  { name: 'Balram Singh Ahirwar', role: 'Project Manager', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80', description: 'Responsible for project execution, poultry operations and farm management ensuring world-class production standards.' },
-  { name: 'Seema Ahirwar', role: 'Director', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80', description: 'Responsible for administration, compliance and overall company operations ensuring smooth day-to-day execution.' },
+  { name: 'Balram Singh Ahirwar', role: 'Managing Director', image: 'https://customer-assets-0z36b82j.emergentagent.net/job_akbs-corporate-site/artifacts/r46tm9lk_image.png', description: 'Leading corporate strategy, poultry operations, farm management and integrated business development ensuring world-class production standards at AKBS Poultry.' },
+  { name: 'Shailendra Choudhary', role: 'Project Coordinator  •  CEO, Savrdh Financial Services Pvt Ltd', image: 'https://customer-assets-0z36b82j.emergentagent.net/job_akbs-corporate-site/artifacts/uf1ldk6w_image.png', description: 'Driving project coordination, financial planning and expansion at AKBS Poultry. Also serves as CEO of Savrdh Financial Services Private Limited.' },
+  { name: 'Kirti', role: 'Director', image: 'https://customer-assets-0z36b82j.emergentagent.net/job_akbs-corporate-site/artifacts/5cuw2g4u_image.png', description: 'Responsible for administration, compliance and overall company operations ensuring smooth day-to-day execution across all AKBS Poultry facilities.' },
 ];
 
 const TESTIMONIALS = [
@@ -526,8 +526,8 @@ function Management() {
         <div className="grid md:grid-cols-3 gap-6">
           {MANAGEMENT.map((m, i) => (
             <motion.div key={m.name} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }} whileHover={{ y: -8 }} className="bg-white rounded-[24px] overflow-hidden shadow-luxury border border-black/5 group">
-              <div className="relative h-72 overflow-hidden">
-                <img src={m.image} alt={m.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="relative h-80 overflow-hidden bg-akbs-bg">
+                <img src={m.image} alt={m.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-akbs-dark/60 via-transparent to-transparent" />
               </div>
               <div className="p-6">
