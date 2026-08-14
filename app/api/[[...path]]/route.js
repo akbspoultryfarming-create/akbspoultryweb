@@ -117,10 +117,9 @@ const BRAND_WHATSAPP = '919893345906';
 const BRAND_WEBSITE = 'https://akbspoultry.com';
 const BRAND_ADDRESS = 'Vill. Jam, Kundali Bamhori, Tehsil Silwani, Dist. Raisen (M.P.) - 464226';
 const SOCIAL_LINKS = {
-  facebook: 'https://facebook.com/akbspoultry',
-  instagram: 'https://instagram.com/akbspoultry',
+  facebook: 'https://www.facebook.com/akbspoultryfarming',
+  instagram: 'https://www.instagram.com/akbspoultryfarming',
   whatsapp: `https://wa.me/${BRAND_WHATSAPP}`,
-  youtube: 'https://youtube.com/@akbspoultry',
 };
 
 function escapeHtml(s) {
@@ -236,8 +235,7 @@ function renderAdminEmailHtml({ name, email, phone, message, ip, userAgent }) {
       <tr>
         <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.facebook}" style="display:inline-block;width:36px;height:36px;background:#1877F2;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">f</a></td>
         <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.whatsapp}" style="display:inline-block;width:36px;height:36px;background:${BRAND.whatsapp};color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">W</a></td>
-        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.instagram}" style="display:inline-block;width:36px;height:36px;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">◉</a></td>
-        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.youtube}" style="display:inline-block;width:36px;height:36px;background:#FF0000;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:14px;">▶</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.instagram}" style="display:inline-block;width:36px;height:36px;background:#E4405F;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">◉</a></td>
       </tr>
     </table>
   </td></tr>
@@ -320,8 +318,7 @@ function renderCustomerEmailHtml({ name, message }) {
       <tr>
         <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.facebook}" style="display:inline-block;width:36px;height:36px;background:#1877F2;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">f</a></td>
         <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.whatsapp}" style="display:inline-block;width:36px;height:36px;background:${BRAND.whatsapp};color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">W</a></td>
-        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.instagram}" style="display:inline-block;width:36px;height:36px;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">◉</a></td>
-        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.youtube}" style="display:inline-block;width:36px;height:36px;background:#FF0000;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:14px;">▶</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.instagram}" style="display:inline-block;width:36px;height:36px;background:#E4405F;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">◉</a></td>
       </tr>
     </table>
   </td></tr>
