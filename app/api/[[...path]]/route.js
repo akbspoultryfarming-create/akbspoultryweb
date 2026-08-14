@@ -165,13 +165,13 @@ function renderAdminEmailHtml({ name, email, phone, message, ip, userAgent }) {
 <tr><td align="center">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:${BRAND.white};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
   <!-- HEADER -->
-  <tr><td style="background:linear-gradient(135deg,${BRAND.green} 0%,${BRAND.dark} 100%);padding:28px 32px;color:${BRAND.white};">
+  <tr><td bgcolor="${BRAND.green}" style="background:${BRAND.green};background:linear-gradient(135deg,${BRAND.green} 0%,${BRAND.dark} 100%);padding:28px 32px;color:${BRAND.white};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td>
           <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.gold};text-transform:uppercase;margin-bottom:6px;">🔔 New Website Lead</div>
           <div style="font-size:22px;font-weight:800;color:${BRAND.white};line-height:1.2;">AKBS Poultry Farming</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">Contact form inquiry received</div>
+          <div style="font-size:12px;color:#E7EFEA;margin-top:2px;">Contact form inquiry received</div>
         </td>
         <td align="right" valign="top">
           <div style="width:48px;height:48px;border-radius:50%;background:${BRAND.gold};display:inline-block;text-align:center;line-height:48px;font-size:22px;font-weight:900;color:${BRAND.dark};">A</div>
@@ -219,7 +219,7 @@ function renderAdminEmailHtml({ name, email, phone, message, ip, userAgent }) {
 
   <!-- ASSISTANCE -->
   <tr><td style="padding:8px 32px 24px 32px;">
-    <div style="background:#FFF8E7;border:1px solid ${BRAND.gold}33;border-radius:12px;padding:18px 20px;text-align:center;">
+    <div style="background:#FFF8E7;border:1px solid #EBD9AE;border-radius:12px;padding:18px 20px;text-align:center;">
       <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.gold};text-transform:uppercase;margin-bottom:8px;">Need Immediate Assistance?</div>
       <div style="font-size:14px;color:${BRAND.ink};">
         <a href="tel:${BRAND_PHONE_TEL}" style="color:${BRAND.green};text-decoration:none;font-weight:700;">📞 ${BRAND_PHONE}</a> &nbsp;|&nbsp;
@@ -243,11 +243,11 @@ function renderAdminEmailHtml({ name, email, phone, message, ip, userAgent }) {
   </td></tr>
 
   <!-- FOOTER -->
-  <tr><td style="background:${BRAND.dark};padding:24px 32px;text-align:center;color:${BRAND.white};">
+  <tr><td bgcolor="${BRAND.dark}" style="background:${BRAND.dark};padding:24px 32px;text-align:center;color:${BRAND.white};">
     <div style="font-size:15px;font-weight:800;letter-spacing:1px;color:${BRAND.gold};margin-bottom:4px;">AKBS POULTRY FARMING PVT. LTD.</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:10px;">स्वस्थ मुर्गी • बेहतर अंडे • अधिक मुनाफा</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;">${escapeHtml(BRAND_ADDRESS)}</div>
-    <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:12px;">© ${new Date().getFullYear()} AKBS Poultry Farming Private Limited. All Rights Reserved.</div>
+    <div style="font-size:11px;color:#B8CFC0;margin-bottom:10px;">स्वस्थ मुर्गी • बेहतर अंडे • अधिक मुनाफा</div>
+    <div style="font-size:11px;color:#9BB5A6;line-height:1.6;">${escapeHtml(BRAND_ADDRESS)}</div>
+    <div style="font-size:10px;color:#7D9689;margin-top:12px;">© ${new Date().getFullYear()} AKBS Poultry Farming Private Limited. All Rights Reserved.</div>
   </td></tr>
 </table>
 </td></tr>
@@ -271,7 +271,7 @@ function renderCustomerEmailHtml({ name, message }) {
 <tr><td align="center">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:${BRAND.white};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
   <!-- HEADER -->
-  <tr><td style="background:linear-gradient(135deg,${BRAND.green} 0%,${BRAND.dark} 100%);padding:32px 32px;text-align:center;color:${BRAND.white};">
+  <tr><td bgcolor="${BRAND.green}" style="background:${BRAND.green};background:linear-gradient(135deg,${BRAND.green} 0%,${BRAND.dark} 100%);padding:32px 32px;text-align:center;color:${BRAND.white};">
     <div style="width:64px;height:64px;border-radius:50%;background:${BRAND.gold};display:inline-block;text-align:center;line-height:64px;font-size:28px;font-weight:900;color:${BRAND.dark};margin-bottom:14px;">A</div>
     <div style="font-size:22px;font-weight:800;color:${BRAND.white};margin-bottom:4px;">AKBS Poultry Farming</div>
     <div style="font-size:12px;color:${BRAND.gold};letter-spacing:1.5px;font-weight:600;text-transform:uppercase;">Private Limited</div>
@@ -304,7 +304,7 @@ function renderCustomerEmailHtml({ name, message }) {
 
   <!-- CONTACT INFO -->
   <tr><td style="padding:16px 32px 24px 32px;">
-    <div style="background:#FFF8E7;border:1px solid ${BRAND.gold}33;border-radius:12px;padding:18px 20px;text-align:center;">
+    <div style="background:#FFF8E7;border:1px solid #EBD9AE;border-radius:12px;padding:18px 20px;text-align:center;">
       <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.gold};text-transform:uppercase;margin-bottom:10px;">Direct Contact</div>
       <div style="font-size:14px;color:${BRAND.ink};line-height:1.8;">
         <a href="tel:${BRAND_PHONE_TEL}" style="color:${BRAND.green};text-decoration:none;font-weight:700;">📞 ${BRAND_PHONE}</a><br>
@@ -327,11 +327,11 @@ function renderCustomerEmailHtml({ name, message }) {
   </td></tr>
 
   <!-- FOOTER -->
-  <tr><td style="background:${BRAND.dark};padding:24px 32px;text-align:center;color:${BRAND.white};">
+  <tr><td bgcolor="${BRAND.dark}" style="background:${BRAND.dark};padding:24px 32px;text-align:center;color:${BRAND.white};">
     <div style="font-size:15px;font-weight:800;letter-spacing:1px;color:${BRAND.gold};margin-bottom:4px;">AKBS POULTRY FARMING PVT. LTD.</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:10px;">स्वस्थ मुर्गी • बेहतर अंडे • अधिक मुनाफा</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;">${escapeHtml(BRAND_ADDRESS)}</div>
-    <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:12px;">© ${new Date().getFullYear()} AKBS Poultry Farming Private Limited. All Rights Reserved.</div>
+    <div style="font-size:11px;color:#B8CFC0;margin-bottom:10px;">स्वस्थ मुर्गी • बेहतर अंडे • अधिक मुनाफा</div>
+    <div style="font-size:11px;color:#9BB5A6;line-height:1.6;">${escapeHtml(BRAND_ADDRESS)}</div>
+    <div style="font-size:10px;color:#7D9689;margin-top:12px;">© ${new Date().getFullYear()} AKBS Poultry Farming Private Limited. All Rights Reserved.</div>
   </td></tr>
 </table>
 </td></tr>
