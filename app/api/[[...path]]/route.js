@@ -99,14 +99,260 @@ function buildTransporter(settings) {
   });
 }
 
-async function sendContactEmails({ name, email, phone, message }) {
+// ---------- HTML EMAIL TEMPLATES ----------
+// AKBS Brand palette (matches website tailwind.config.js)
+const BRAND = {
+  green: '#0D4D2C',
+  dark: '#07311D',
+  gold: '#C89B3C',
+  bg: '#F8F5EE',
+  ink: '#1F2937',
+  white: '#FFFFFF',
+  whatsapp: '#25D366',
+  greenLight: '#E6F0EA',
+};
+const BRAND_PHONE = '+91 9893345906';
+const BRAND_PHONE_TEL = '+919893345906';
+const BRAND_WHATSAPP = '919893345906';
+const BRAND_WEBSITE = 'https://akbspoultry.com';
+const BRAND_ADDRESS = 'Vill. Jam, Kundali Bamhori, Tehsil Silwani, Dist. Raisen (M.P.) - 464226';
+const SOCIAL_LINKS = {
+  facebook: 'https://facebook.com/akbspoultry',
+  instagram: 'https://instagram.com/akbspoultry',
+  whatsapp: `https://wa.me/${BRAND_WHATSAPP}`,
+  youtube: 'https://youtube.com/@akbspoultry',
+};
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatISTDateTime(date = new Date()) {
+  return new Intl.DateTimeFormat('en-IN', {
+    day: 'numeric', month: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', second: '2-digit',
+    hour12: true, timeZone: 'Asia/Kolkata',
+  }).format(date) + ' IST';
+}
+
+function renderAdminEmailHtml({ name, email, phone, message, ip, userAgent }) {
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email || 'not provided');
+  const safePhone = escapeHtml(phone || 'not provided');
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+  const safeIp = escapeHtml(ip || 'unknown');
+  const safeUa = escapeHtml((userAgent || 'unknown').slice(0, 120));
+  const timestamp = escapeHtml(formatISTDateTime());
+  const phoneDigits = String(phone || '').replace(/[^\d+]/g, '');
+  const waPhone = phoneDigits.replace(/^\+/, '');
+  const hasPhone = phoneDigits.length >= 6;
+  const adminDashUrl = `${BRAND_WEBSITE}/admin`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Website Lead</title>
+</head>
+<body style="margin:0;padding:0;background:${BRAND.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:${BRAND.ink};">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${BRAND.bg};padding:24px 12px;">
+<tr><td align="center">
+<table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:${BRAND.white};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+  <!-- HEADER -->
+  <tr><td style="background:linear-gradient(135deg,${BRAND.green} 0%,${BRAND.dark} 100%);padding:28px 32px;color:${BRAND.white};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.gold};text-transform:uppercase;margin-bottom:6px;">🔔 New Website Lead</div>
+          <div style="font-size:22px;font-weight:800;color:${BRAND.white};line-height:1.2;">AKBS Poultry Farming</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">Contact form inquiry received</div>
+        </td>
+        <td align="right" valign="top">
+          <div style="width:48px;height:48px;border-radius:50%;background:${BRAND.gold};display:inline-block;text-align:center;line-height:48px;font-size:22px;font-weight:900;color:${BRAND.dark};">A</div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- LEAD DETAILS -->
+  <tr><td style="padding:28px 32px 8px 32px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.green};text-transform:uppercase;margin-bottom:14px;">Lead Details</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
+      <tr><td style="padding:10px 0;border-bottom:1px solid #EEE;color:#666;width:130px;font-weight:600;">Name</td><td style="padding:10px 0;border-bottom:1px solid #EEE;color:${BRAND.ink};font-weight:600;">${safeName}</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #EEE;color:#666;font-weight:600;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #EEE;color:${BRAND.ink};">
+        ${hasPhone ? `<a href="tel:${phoneDigits}" style="color:${BRAND.green};text-decoration:none;font-weight:700;">${safePhone}</a> &nbsp; <a href="https://wa.me/${waPhone}" style="display:inline-block;padding:4px 10px;background:${BRAND.whatsapp};color:${BRAND.white};text-decoration:none;border-radius:12px;font-size:11px;font-weight:700;">WhatsApp</a>` : safePhone}
+      </td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #EEE;color:#666;font-weight:600;">Email</td><td style="padding:10px 0;border-bottom:1px solid #EEE;color:${BRAND.ink};">
+        ${email ? `<a href="mailto:${safeEmail}" style="color:${BRAND.green};text-decoration:none;font-weight:600;">${safeEmail}</a>` : `<span style="color:#999;font-style:italic;">not provided</span>`}
+      </td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #EEE;color:#666;font-weight:600;">Date &amp; Time</td><td style="padding:10px 0;border-bottom:1px solid #EEE;color:${BRAND.ink};">${timestamp}</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #EEE;color:#666;font-weight:600;">IP Address</td><td style="padding:10px 0;border-bottom:1px solid #EEE;color:${BRAND.ink};font-family:monospace;font-size:13px;">${safeIp}</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #EEE;color:#666;font-weight:600;">Browser</td><td style="padding:10px 0;border-bottom:1px solid #EEE;color:${BRAND.ink};font-size:12px;">${safeUa}</td></tr>
+      <tr><td style="padding:10px 0;color:#666;font-weight:600;">Source</td><td style="padding:10px 0;color:${BRAND.ink};">Website Contact Form</td></tr>
+    </table>
+  </td></tr>
+
+  <!-- MESSAGE BLOCK -->
+  <tr><td style="padding:16px 32px 8px 32px;">
+    <div style="background:${BRAND.greenLight};border-left:4px solid ${BRAND.green};padding:18px 20px;border-radius:8px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.green};text-transform:uppercase;margin-bottom:8px;">Message from Lead</div>
+      <div style="font-size:15px;color:${BRAND.ink};line-height:1.6;">${safeMessage}</div>
+    </div>
+  </td></tr>
+
+  <!-- ACTION BUTTONS -->
+  <tr><td style="padding:24px 32px 8px 32px;" align="center">
+    <table role="presentation" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:0 6px 10px 0;"><a href="${adminDashUrl}" style="display:inline-block;padding:12px 22px;background:${BRAND.dark};color:${BRAND.white};text-decoration:none;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">Open Admin Dashboard</a></td>
+        ${hasPhone ? `<td style="padding:0 6px 10px 0;"><a href="tel:${phoneDigits}" style="display:inline-block;padding:12px 22px;background:${BRAND.green};color:${BRAND.white};text-decoration:none;border-radius:24px;font-size:13px;font-weight:700;">📞 Call Lead</a></td>` : ''}
+        ${hasPhone ? `<td style="padding:0 0 10px 0;"><a href="https://wa.me/${waPhone}" style="display:inline-block;padding:12px 22px;background:${BRAND.whatsapp};color:${BRAND.white};text-decoration:none;border-radius:24px;font-size:13px;font-weight:700;">💬 WhatsApp</a></td>` : ''}
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- ASSISTANCE -->
+  <tr><td style="padding:8px 32px 24px 32px;">
+    <div style="background:#FFF8E7;border:1px solid ${BRAND.gold}33;border-radius:12px;padding:18px 20px;text-align:center;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.gold};text-transform:uppercase;margin-bottom:8px;">Need Immediate Assistance?</div>
+      <div style="font-size:14px;color:${BRAND.ink};">
+        <a href="tel:${BRAND_PHONE_TEL}" style="color:${BRAND.green};text-decoration:none;font-weight:700;">📞 ${BRAND_PHONE}</a> &nbsp;|&nbsp;
+        <a href="https://wa.me/${BRAND_WHATSAPP}" style="color:${BRAND.whatsapp};text-decoration:none;font-weight:700;">💬 WhatsApp</a> &nbsp;|&nbsp;
+        <a href="${BRAND_WEBSITE}" style="color:${BRAND.green};text-decoration:none;font-weight:700;">🌐 akbspoultry.com</a>
+      </div>
+    </div>
+  </td></tr>
+
+  <!-- FOLLOW US -->
+  <tr><td style="padding:0 32px 24px 32px;text-align:center;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:12px;">Follow Us</div>
+    <table role="presentation" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.facebook}" style="display:inline-block;width:36px;height:36px;background:#1877F2;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">f</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.whatsapp}" style="display:inline-block;width:36px;height:36px;background:${BRAND.whatsapp};color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">W</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.instagram}" style="display:inline-block;width:36px;height:36px;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">◉</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.youtube}" style="display:inline-block;width:36px;height:36px;background:#FF0000;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:14px;">▶</a></td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- FOOTER -->
+  <tr><td style="background:${BRAND.dark};padding:24px 32px;text-align:center;color:${BRAND.white};">
+    <div style="font-size:15px;font-weight:800;letter-spacing:1px;color:${BRAND.gold};margin-bottom:4px;">AKBS POULTRY FARMING PVT. LTD.</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:10px;">स्वस्थ मुर्गी • बेहतर अंडे • अधिक मुनाफा</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;">${escapeHtml(BRAND_ADDRESS)}</div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:12px;">© ${new Date().getFullYear()} AKBS Poultry Farming Private Limited. All Rights Reserved.</div>
+  </td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+function renderCustomerEmailHtml({ name, message }) {
+  const safeName = escapeHtml(name);
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>We received your message | AKBS Poultry</title>
+</head>
+<body style="margin:0;padding:0;background:${BRAND.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:${BRAND.ink};">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${BRAND.bg};padding:24px 12px;">
+<tr><td align="center">
+<table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:${BRAND.white};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+  <!-- HEADER -->
+  <tr><td style="background:linear-gradient(135deg,${BRAND.green} 0%,${BRAND.dark} 100%);padding:32px 32px;text-align:center;color:${BRAND.white};">
+    <div style="width:64px;height:64px;border-radius:50%;background:${BRAND.gold};display:inline-block;text-align:center;line-height:64px;font-size:28px;font-weight:900;color:${BRAND.dark};margin-bottom:14px;">A</div>
+    <div style="font-size:22px;font-weight:800;color:${BRAND.white};margin-bottom:4px;">AKBS Poultry Farming</div>
+    <div style="font-size:12px;color:${BRAND.gold};letter-spacing:1.5px;font-weight:600;text-transform:uppercase;">Private Limited</div>
+  </td></tr>
+
+  <!-- GREETING -->
+  <tr><td style="padding:32px 32px 8px 32px;">
+    <div style="font-size:20px;font-weight:700;color:${BRAND.dark};margin-bottom:12px;">Namaste ${safeName} 👋</div>
+    <p style="font-size:15px;color:${BRAND.ink};line-height:1.7;margin:0 0 14px 0;">
+      Thank you for reaching out to <strong>AKBS Poultry Farming Private Limited</strong>. We've received your message and our team will get back to you shortly — usually within 24 hours on business days.
+    </p>
+    <p style="font-size:15px;color:${BRAND.ink};line-height:1.7;margin:0;">
+      आपने हमसे संपर्क किया, इसके लिए धन्यवाद। हमारी टीम जल्द ही आपसे संपर्क करेगी।
+    </p>
+  </td></tr>
+
+  <!-- MESSAGE ECHO -->
+  <tr><td style="padding:20px 32px 8px 32px;">
+    <div style="background:${BRAND.greenLight};border-left:4px solid ${BRAND.green};padding:18px 20px;border-radius:8px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.green};text-transform:uppercase;margin-bottom:8px;">Your Message</div>
+      <div style="font-size:14px;color:${BRAND.ink};line-height:1.6;">${safeMessage}</div>
+    </div>
+  </td></tr>
+
+  <!-- CTA -->
+  <tr><td style="padding:24px 32px 8px 32px;" align="center">
+    <a href="${BRAND_WEBSITE}" style="display:inline-block;padding:14px 28px;background:${BRAND.green};color:${BRAND.white};text-decoration:none;border-radius:24px;font-size:14px;font-weight:700;letter-spacing:0.5px;margin:0 4px 8px 4px;">🌐 Visit Our Website</a>
+    <a href="https://wa.me/${BRAND_WHATSAPP}" style="display:inline-block;padding:14px 28px;background:${BRAND.whatsapp};color:${BRAND.white};text-decoration:none;border-radius:24px;font-size:14px;font-weight:700;margin:0 4px 8px 4px;">💬 Chat on WhatsApp</a>
+  </td></tr>
+
+  <!-- CONTACT INFO -->
+  <tr><td style="padding:16px 32px 24px 32px;">
+    <div style="background:#FFF8E7;border:1px solid ${BRAND.gold}33;border-radius:12px;padding:18px 20px;text-align:center;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${BRAND.gold};text-transform:uppercase;margin-bottom:10px;">Direct Contact</div>
+      <div style="font-size:14px;color:${BRAND.ink};line-height:1.8;">
+        <a href="tel:${BRAND_PHONE_TEL}" style="color:${BRAND.green};text-decoration:none;font-weight:700;">📞 ${BRAND_PHONE}</a><br>
+        <a href="mailto:info@akbspoultry.com" style="color:${BRAND.green};text-decoration:none;font-weight:700;">✉️ info@akbspoultry.com</a>
+      </div>
+    </div>
+  </td></tr>
+
+  <!-- FOLLOW US -->
+  <tr><td style="padding:0 32px 24px 32px;text-align:center;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:12px;">Follow Us</div>
+    <table role="presentation" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.facebook}" style="display:inline-block;width:36px;height:36px;background:#1877F2;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">f</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.whatsapp}" style="display:inline-block;width:36px;height:36px;background:${BRAND.whatsapp};color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">W</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.instagram}" style="display:inline-block;width:36px;height:36px;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:16px;">◉</a></td>
+        <td style="padding:0 6px;"><a href="${SOCIAL_LINKS.youtube}" style="display:inline-block;width:36px;height:36px;background:#FF0000;color:#fff;border-radius:50%;text-decoration:none;text-align:center;line-height:36px;font-weight:700;font-size:14px;">▶</a></td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- FOOTER -->
+  <tr><td style="background:${BRAND.dark};padding:24px 32px;text-align:center;color:${BRAND.white};">
+    <div style="font-size:15px;font-weight:800;letter-spacing:1px;color:${BRAND.gold};margin-bottom:4px;">AKBS POULTRY FARMING PVT. LTD.</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:10px;">स्वस्थ मुर्गी • बेहतर अंडे • अधिक मुनाफा</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;">${escapeHtml(BRAND_ADDRESS)}</div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:12px;">© ${new Date().getFullYear()} AKBS Poultry Farming Private Limited. All Rights Reserved.</div>
+  </td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+async function sendContactEmails({ name, email, phone, message, ip, userAgent }) {
   const settings = smtpSettings();
   const transporter = buildTransporter(settings);
 
   // Envelope-from MUST equal the authenticated user for most providers (incl. Hostinger).
   // Header From can be a display-name wrapped SMTP_FROM, but envelope must be user.
   const envelopeFrom = settings.user;
-  const headerFrom = settings.from || settings.user;
+  const headerFromName = 'AKBS Poultry Farming';
+  const headerFrom = `"${headerFromName}" <${settings.from || settings.user}>`;
+
+  const adminSubjectEmail = email ? email : 'No Email User';
+  const adminSubjectPhone = phone ? phone : '';
+  const adminSubject = `🔔 New Website Lead: ${name} (${adminSubjectPhone || adminSubjectEmail}) - info@akbspoultry.com`;
 
   const adminMessage = {
     from: headerFrom,
@@ -114,13 +360,19 @@ async function sendContactEmails({ name, email, phone, message }) {
     envelope: { from: envelopeFrom, to: [settings.adminEmail] },
     to: settings.adminEmail,
     replyTo: email || undefined,
-    subject: `New contact form inquiry from ${name}`,
+    subject: adminSubject,
     text:
-      `A new inquiry was submitted through the AKBS Poultry website.\n\n` +
+      `NEW WEBSITE LEAD - AKBS Poultry\n\n` +
       `Name: ${name}\n` +
-      `Email: ${email || 'Not provided'}\n` +
-      `Phone: ${phone || 'Not provided'}\n\n` +
-      `Message:\n${message}\n`,
+      `Phone: ${phone || 'not provided'}\n` +
+      `Email: ${email || 'not provided'}\n` +
+      `Date & Time: ${formatISTDateTime()}\n` +
+      `IP Address: ${ip || 'unknown'}\n` +
+      `Browser: ${(userAgent || 'unknown').slice(0, 120)}\n` +
+      `Source: Website Contact Form\n\n` +
+      `MESSAGE FROM LEAD:\n${message}\n\n` +
+      `--\nAKBS Poultry Farming Private Limited\n${BRAND_ADDRESS}\n${BRAND_PHONE} | ${BRAND_WEBSITE}`,
+    html: renderAdminEmailHtml({ name, email, phone, message, ip, userAgent }),
   };
 
   const customerMessage = email
@@ -131,11 +383,16 @@ async function sendContactEmails({ name, email, phone, message }) {
         to: email,
         subject: 'We received your message | AKBS Poultry',
         text:
-          `Dear ${name},\n\n` +
+          `Namaste ${name},\n\n` +
           `Thank you for contacting AKBS Poultry Farming Private Limited. ` +
-          `We have received your message and our team will get back to you shortly.\n\n` +
+          `We have received your message and our team will get back to you shortly - usually within 24 hours on business days.\n\n` +
           `Your message:\n${message}\n\n` +
-          `Regards,\nAKBS Poultry Farming Private Limited`,
+          `For immediate assistance:\n` +
+          `Phone: ${BRAND_PHONE}\n` +
+          `WhatsApp: https://wa.me/${BRAND_WHATSAPP}\n` +
+          `Website: ${BRAND_WEBSITE}\n\n` +
+          `Regards,\nAKBS Poultry Farming Private Limited\n${BRAND_ADDRESS}`,
+        html: renderCustomerEmailHtml({ name, message }),
       }
     : null;
 
@@ -194,7 +451,9 @@ async function handler(request, { params }) {
       };
       await db.collection('inquiries').insertOne(doc);
       try {
-        const result = await sendContactEmails(doc);
+        const ip = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown';
+        const userAgent = request.headers.get('user-agent') || 'unknown';
+        const result = await sendContactEmails({ ...doc, ip, userAgent });
         console.log('[contact] emails dispatched', {
           inquiryId: doc.id,
           admin: result.admin && { messageId: result.admin.messageId, accepted: result.admin.accepted },
