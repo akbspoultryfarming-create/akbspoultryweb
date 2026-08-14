@@ -44,6 +44,12 @@ function sanitizeEnv(value) {
   if (v.length >= 2 && ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'")))) {
     v = v.slice(1, -1);
   }
+  // Unescape shell-style backslash escapes for common special chars.
+  // Hostinger's env panel stores "Akbs\#" literally, so nodemailer would send the
+  // backslash to smtp.hostinger.com and get 535 EAUTH. This restores the intended value.
+  // Only unescape a curated set of characters that users commonly try to escape in .env
+  // files - never blindly unescape everything.
+  v = v.replace(/\\([#$@!%&*()\[\]{}<>|;:,./?"'`\\])/g, '$1');
   return v;
 }
 
@@ -235,6 +241,7 @@ async function handler(request, { params }) {
             has_backslash: env.password.includes('\\'),
             has_quote: /['"]/.test(env.password),
             has_leading_or_trailing_space: env.password !== env.password.trim(),
+            raw_length: (process.env.SMTP_PASSWORD || process.env.SMTP_PASS || '').length,
           }
         : null;
       const status = {
