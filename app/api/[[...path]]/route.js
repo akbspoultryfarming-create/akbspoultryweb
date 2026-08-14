@@ -34,14 +34,27 @@ function isAuthorized(request) {
   return !!(token && token === makeToken());
 }
 
+function sanitizeEnv(value) {
+  // Hostinger's env panel sometimes persists shell-escaped values verbatim (e.g. "\#"),
+  // wraps values in matching quotes, or leaves trailing whitespace/newlines. Clean them up
+  // so a small config typo does not silently break SMTP auth.
+  if (value === undefined || value === null) return value;
+  let v = String(value).trim();
+  // Strip a matching pair of surrounding quotes: "foo" or 'foo'
+  if (v.length >= 2 && ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'")))) {
+    v = v.slice(1, -1);
+  }
+  return v;
+}
+
 function readSmtpEnv() {
   // Support multiple aliases so it works with the user's Hostinger env naming.
-  const host = process.env.SMTP_HOST;
-  const portRaw = process.env.SMTP_PORT;
-  const user = process.env.SMTP_USER;
-  const password = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
-  const from = process.env.SMTP_FROM || process.env.SMTP_FROM_EMAIL || user;
-  const adminEmail = process.env.ADMIN_EMAIL || process.env.ADMIN_EMAILS;
+  const host = sanitizeEnv(process.env.SMTP_HOST);
+  const portRaw = sanitizeEnv(process.env.SMTP_PORT);
+  const user = sanitizeEnv(process.env.SMTP_USER);
+  const password = sanitizeEnv(process.env.SMTP_PASSWORD || process.env.SMTP_PASS);
+  const from = sanitizeEnv(process.env.SMTP_FROM || process.env.SMTP_FROM_EMAIL) || user;
+  const adminEmail = sanitizeEnv(process.env.ADMIN_EMAIL || process.env.ADMIN_EMAILS);
   return { host, portRaw, user, password, from, adminEmail };
 }
 
@@ -216,6 +229,14 @@ async function handler(request, { params }) {
       if (!isAuthorized(request)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       const env = readSmtpEnv();
       const mask = (v) => (v ? `${String(v).slice(0, 2)}***${String(v).slice(-2)}` : null);
+      const pwFlags = env.password
+        ? {
+            length: env.password.length,
+            has_backslash: env.password.includes('\\'),
+            has_quote: /['"]/.test(env.password),
+            has_leading_or_trailing_space: env.password !== env.password.trim(),
+          }
+        : null;
       const status = {
         env: {
           SMTP_HOST: env.host || null,
@@ -223,6 +244,7 @@ async function handler(request, { params }) {
           SMTP_USER: env.user || null,
           SMTP_PASSWORD_present: !!env.password,
           SMTP_PASSWORD_masked: mask(env.password),
+          SMTP_PASSWORD_flags: pwFlags,
           SMTP_FROM: env.from || null,
           ADMIN_EMAIL: env.adminEmail || null,
         },
